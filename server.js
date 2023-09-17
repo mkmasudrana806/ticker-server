@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
-
+const cron = require("node-cron");
 const port = process.env.PORT || 5000;
 
 // mongodb connection file
@@ -29,8 +29,14 @@ connectMongoDb("mongodb://localhost:27017").then(() => {
   console.log("mongodb connected");
 });
 
-// initaily called ticker and store in database
+//
+// assume that the ticker data will be updated every minute
+const frequency = "* * * * *"; // This schedule means "every minute"
+
+// Call tickerDataAndStore immediately
 tickerDataAndStore();
+
+// cron.schedule(frequency, tickerDataAndStore);
 
 // Start the server
 app.listen(port, () => {
