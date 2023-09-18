@@ -7,6 +7,7 @@ const tickerSchema = new mongoose.Schema({
   sell: Number,
   volume: Number,
   base_unit: String,
+  name: String,
 });
 
 const Ticker = mongoose.model("Ticker", tickerSchema);

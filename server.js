@@ -17,15 +17,19 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5173",
+    origin: "http://127.0.0.1:5500",
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("server is running");
+});
 // ticker routes
 app.use("/ticker", tickerRoutes);
 
 // Database connection
-connectMongoDb("mongodb://localhost:27017").then(() => {
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ktfe5gd.mongodb.net/?retryWrites=true&w=majority`;
+connectMongoDb(uri).then(() => {
   console.log("mongodb connected");
 });
 
@@ -36,7 +40,7 @@ const frequency = "* * * * *"; // This schedule means "every minute"
 // Call tickerDataAndStore immediately
 tickerDataAndStore();
 
-// cron.schedule(frequency, tickerDataAndStore);
+cron.schedule(frequency, tickerDataAndStore);
 
 // Start the server
 app.listen(port, () => {
