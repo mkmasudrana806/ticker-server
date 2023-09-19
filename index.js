@@ -17,9 +17,14 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5500",
   })
 );
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "http://127.0.0.1:5500",
+//   })
+// );
 
 app.get("/", (req, res) => {
   res.send("server is running");
