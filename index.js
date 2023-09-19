@@ -14,17 +14,17 @@ const { tickerDataAndStore } = require("./controllers/tickerController");
 
 // middleware
 app.use(express.json());
-app.use(
-  cors({
-    credentials: true,
-  })
-);
 // app.use(
 //   cors({
 //     credentials: true,
-//     origin: "http://127.0.0.1:5500",
 //   })
 // );
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://mkmasudrana806.github.io",
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("server is running");
