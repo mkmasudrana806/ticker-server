@@ -9,22 +9,19 @@ const tickerDataAndStore = async () => {
     //first top 10 ticker from the api
     const topTenTicker = Object.fromEntries(Object.entries(data).slice(0, 10));
 
-    // delete previous ticker
+    // Delete previous ticker data
     await Ticker.deleteMany({});
 
-    // extract data and store it in the database
-    Object.entries(topTenTicker).map(([platform, data]) => {
-      const newTicker = new Ticker({
-        platform,
-        last: data.last,
-        buy: data.buy,
-        sell: data.sell,
-        volume: data.volume,
-        base_unit: data.base_unit,
-        name: data.name,
-      });
-      newTicker.save();
-    });
+    const dataArr = Object.entries(topTenTicker).map(([platform, data]) => ({
+      platform,
+      last: data.last,
+      buy: data.buy,
+      sell: data.sell,
+      volume: data.volume,
+      base_unit: data.base_unit,
+      name: data.name,
+    }));
+    await Ticker.insertMany(dataArr);
   } catch (error) {
     console.error("Error while fetching API:", error);
   }
@@ -32,8 +29,12 @@ const tickerDataAndStore = async () => {
 
 // ############## get all the tickers data from the database ###########
 const getTopTenTicker = async (req, res) => {
-  const tickers = await Ticker.find({});
-  res.json(tickers);
+  try {
+    const topTenTickers = await Ticker.find();
+    res.status(200).json(topTenTickers);
+  } catch (error) {
+    res.status(500).json("Internal Server Error");
+  }
 };
 
 module.exports = {

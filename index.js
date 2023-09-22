@@ -22,7 +22,8 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "https://mkmasudrana806.github.io",
+    // origin: "http://127.0.0.1:5500",
+    origin: "https://polite-creponne-3d31f8.netlify.app",
   })
 );
 
